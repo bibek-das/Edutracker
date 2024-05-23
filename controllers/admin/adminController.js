@@ -6,6 +6,9 @@ const Routine = require("../../models/admin/routine");
 const Schedule = require("../../models/admin/schedule");
 const fs = require('fs');
 const bodyParser = require("body-parser");
+
+const startDate = '2024-05-23';
+const endDate = '2024-06-23';
 //helper
 function formatTime(timeStr) {
   let [time, period] = timeStr.split(' ');
@@ -59,7 +62,8 @@ exports.homeView = (req, res) => {
 exports.manageTeacherView = async (req, res) => {
   try {
     const departments = await Department.find();
-    res.render("./admin/manageTeacher", { departments });
+    const msg = req.query.message;
+    res.render("./admin/manageTeacher", { departments, msg });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
@@ -114,7 +118,7 @@ exports.addCalendar = async (req, res) => {
     const newString = dateString.substring(0, yearPosition + 4);
     // Output: "Sat May 18 2024"
 
-    const msg = `Event addad on ${newString}`;
+    const msg = `Event addad`;
     res.redirect(`./academicCalendar?message=${encodeURIComponent(msg)}`);
   } catch (error) {
     console.error(error);
@@ -125,9 +129,15 @@ exports.addCalendar = async (req, res) => {
 
 //manageTeacher Post method
 
-exports.addTeacher = (req, res , next) => {
+exports.addTeacher = async (req, res , next) => {
   const files = req.files;
   const tempTeacher = req.body;
+  const {email} = req.body
+  const sameEmail = await User.findOne({email});
+  if(sameEmail){
+    const msg = "Same email exists";
+    return res.redirect(`./manageTeacher?message=${encodeURIComponent(msg)}`);
+  }
   tempTeacher.authID = tempTeacher.department + '-' + "0001";
 
   if(!files){
@@ -192,6 +202,18 @@ exports.visitTeacherProfile = async (req, res) => {
   const dept = await Department.findOne({deptName: teacher.department})
   res.render('./teachers/teacherProfile', { teacher, dept });
 }
+
+exports.visitTeacherLog = async (req, res) => {
+  try {
+    const teacher = await Teacher.findById(req.params.id);
+    // console.log(teacher.authID)
+    const classLog = await Schedule.find({teacher: teacher.authID});
+    res.render("./teachers/class_log", { classLog });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
+};
 
 exports.addRoutine = async (req, res) => {
   const tempRoutine = req.body;
@@ -295,9 +317,6 @@ exports.addRoutine = async (req, res) => {
     }
   }
   
-  const startDate = '2024-05-01';
-  const endDate = '2024-06-07';
-  
   loopThroughDatesWithDayOfWeek(startDate, endDate);
   
   res.redirect(`./routine`);
@@ -305,8 +324,24 @@ exports.addRoutine = async (req, res) => {
 
 
 exports.deleteRoutine = async (req, res) => {
+  // const routine = await Routine.find({_id: req.params.id});
+  // console.log(routine);
+  // const routines = await Schedule.find(
+  //       {day: routine.day}, 
+  //       {startTime: routine.startTime}, 
+  //       {endTime: routine.endTime}, 
+  //       {batch: routine.batch},
+  //       {section: routine.section},
+  //       {course: routine.course},
+  //       {teacher: routine.teacher},
+  //       {room: routine.room}, 
+  //       {department: routine.department},
+  //   )
+  //   console.log(routines);
+  //   for(rr of routines){
+  //     await Schedule.findByIdAndDelete(rr._id);
+  //   }
   await Routine.findByIdAndDelete(req.params.id);
-  //schedule needs to be delated;
   console.log("Deleted");
 }
 

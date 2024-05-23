@@ -11,7 +11,6 @@ app.use(express.json());
 
 
 hbs.registerHelper('eq', function (arg1, arg2) {
-  console.log(arg1, arg2);
   return (arg1 === arg2);
 });
 
@@ -113,7 +112,7 @@ cron.schedule('* * * * *', async () => {
     console.log(`Checking for class updates at ${currentTime}...`);
     // Find all classes that are scheduled to start at the current time and have the status 'upcoming'
     const updateUpcoming = await Schedule.find({ date: currentDate, day: day, startTime: currentTime, status: 'upcoming' });
-    console.log(updateUpcoming);
+    // console.log(updateUpcoming);
 
     // Update the status of all found classes to 'ongoing'
     for (const classItem of updateUpcoming) {
@@ -125,7 +124,7 @@ cron.schedule('* * * * *', async () => {
     }
 
     const updateOngoing = await Schedule.find({ date: currentDate, day: day, endTime: currentTime, status: 'ongoing' });
-    console.log(updateOngoing);
+    // console.log(updateOngoing);
 
     // Update the status of all found classes to 'ongoing'
     for (const classItem of updateOngoing) {
@@ -140,7 +139,7 @@ cron.schedule('* * * * *', async () => {
     const newTime = subtractMinutes(originalTime, 2);
 
     const updateWaiting = await Schedule.find({ date: currentDate, day: day, endTime: newTime, status: 'waiting' });
-    console.log(updateWaiting);
+    // console.log(updateWaiting);
 
     // Update the status of all found classes to 'Waiting'
     for (const classItem of updateWaiting) {

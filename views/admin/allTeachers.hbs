@@ -8,7 +8,9 @@
     <link rel = "stylesheet" href="/styles/admin/allTeacherStyle.css">
 </head>
 <body>
-  <header><h1>All Teachers List</h1></header>
+  <header>
+    <h1 style="color: white;">All Teachers List</h1>
+  </header>
 
 <div class="container">
     
@@ -37,7 +39,7 @@
               <td class="phone">{{phone}}</td>
               <td class="options">
                 <button class="option"><a href="./api/teacher/{{this._id}}">Visit Profile</a></button>
-                <button class="option">Visit Log</button>
+                <button class="option"><a href="./api/teacher/classlog/{{this._id}}">Visit Log</a></button>
               </td>
             </tr>
             {{/if}}

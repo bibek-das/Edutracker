@@ -11,6 +11,7 @@ router.get("/academicCalendar", isAuth, isAdmin, adminController.calendarView);
 router.get("/routine", isAuth, isAdmin, adminController.routineView);
 router.get("/allTeachers", isAuth, isAdmin, adminController.allTeachersView);
 router.get('/api/teacher/:id', isAuth, isAdmin, adminController.visitTeacherProfile);
+router.get('/api/teacher/classlog/:id', isAuth, isAdmin, adminController.visitTeacherLog);
 router.post("/academicCalendar", isAuth, isAdmin, adminController.addCalendar);
 router.post('/manageTeacher', isAuth, isAdmin, store.array('images', 1) , adminController.addTeacher);
 router.post("/routine", isAuth, isAdmin, adminController.addRoutine);
