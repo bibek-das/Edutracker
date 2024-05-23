@@ -7,7 +7,7 @@ body {
   #addRoutineBtn{
     margin-bottom: 8px;
   }
-  .container {
+  .container, header {
     max-width: 800px;
     margin: 20px auto;
     padding: 20px;
@@ -15,9 +15,18 @@ body {
     border-radius: 8px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   }
+
+  header {
+    background-color: darkslategrey;
+    color:white;
+    text-align: center;
+    box-shadow: darkslategrey;
+    padding: 20px 20px 20px 20px;
+  }
+
   h1 {
     text-align: center;
-    color: #333;
+    color: white;
   }
   .form-group {
     margin-bottom: 20px;

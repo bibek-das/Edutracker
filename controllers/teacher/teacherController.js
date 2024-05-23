@@ -1,6 +1,7 @@
 const Teacher = require("../../models/admin/teacher");
 const Department = require("../../models/admin/department")
 const Schedule = require("../../models/admin/schedule");
+const User = require("../../models/authentication/auth");
 
 exports.profileView = async (req, res) => {
     try {
@@ -18,7 +19,11 @@ exports.logView = async (req, res) => {
   try {
     const teacher = await Teacher.findById(req.params.id);
     const classLog = await Schedule.find({teacher: teacher.authID}).sort({date:1});
-    res.render("./teachers/class_log", { teacher, classLog});
+    // const user = await User.findOne({email: teacher.email});
+    // console.log(user.role);
+    const user = req.session.user;
+    // console.log(user.role);
+    res.render("./teachers/class_log", {user, teacher, classLog});
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
