@@ -43,7 +43,7 @@ All Teacher:
 <br>
 Teacher Profile:
 <br>
-![](images/teacher_profile.PNG)
+![](images/Teacher_Profile.PNG)
 <br>
 Class-Log:
 <br>
